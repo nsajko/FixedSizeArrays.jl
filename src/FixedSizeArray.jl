@@ -102,11 +102,8 @@ function checked_dims(t::Tuple{Int,Vararg{Int,N}}) where {N}
     if product isa Int
         product
     else
-        if product.any_is_negative
-            throw(ArgumentError("array dimension size can't be negative"))
-        end
-        if product.any_is_typemax
-            throw(ArgumentError("array dimension size can't be the maximum representable value"))
+        if product isa CheckedSizeProduct.StatusInvalidValue
+            throw(ArgumentError("invalid array dimension size, can't be negative or the maximum representable value"))
         end
         throw(ArgumentError("array dimensions too great, can't represent length"))
     end
